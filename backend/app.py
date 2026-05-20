@@ -14,13 +14,17 @@ else:
     print("Connection Failed")
 
 # Deployed Contract Address
-contract_address = "0xE78ffF9C3Db2485A9FBA31a9F6318CAab7F7AAB7"
+contract_address = "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab"
 
 # Updated ABI from BikeSecurity.json
 contract_abi = [
 {
 "anonymous": False,
-"inputs":[{"indexed":False,"internalType":"string","name":"phone","type":"string"}],
+"inputs":[
+{"indexed":False,"internalType":"string","name":"phone","type":"string"},
+{"indexed":False,"internalType":"string","name":"location","type":"string"},
+{"indexed":False,"internalType":"uint256","name":"timestamp","type":"uint256"}
+],
 "name":"SensorTriggered",
 "type":"event"
 },
@@ -51,10 +55,30 @@ contract_abi = [
 "type":"function"
 },
 {
-"inputs":[{"internalType":"string","name":"phone","type":"string"}],
+"inputs":[
+{"internalType":"string","name":"phone","type":"string"},
+{"internalType":"string","name":"location","type":"string"}
+],
 "name":"triggerSensor",
 "outputs":[],
 "stateMutability":"nonpayable",
+"type":"function"
+},
+{
+"inputs":[{"internalType":"string","name":"phone","type":"string"}],
+"name":"getAlertHistory",
+"outputs":[
+{"components":[
+{"internalType":"string","name":"phone","type":"string"},
+{"internalType":"string","name":"location","type":"string"},
+{"internalType":"uint256","name":"timestamp","type":"uint256"}
+],
+"internalType":"struct BikeSecurity.SensorAlert[]",
+"name":"",
+"type":"tuple[]"
+}
+],
+"stateMutability":"view",
 "type":"function"
 }
 ]
@@ -135,8 +159,9 @@ def trigger():
 
     data = request.json
     phone = data["phone"]
+    location = data.get("location", "Unknown")
 
-    tx = contract.functions.triggerSensor(phone).transact({
+    tx = contract.functions.triggerSensor(phone, location).transact({
         "from": account
     })
 
@@ -147,6 +172,26 @@ def trigger():
         "transaction_hash": tx.hex(),
         "block_number": receipt.blockNumber
     })
+
+
+# ALERT HISTORY API
+@app.route("/history", methods=["GET"])
+def history():
+
+    phone = request.args.get("phone")
+
+    alerts = contract.functions.getAlertHistory(phone).call()
+
+    result = [
+        {
+            "phone": a[0],
+            "location": a[1],
+            "timestamp": a[2]
+        }
+        for a in alerts
+    ]
+
+    return jsonify(result)
 
 
 # HOME ROUTE
