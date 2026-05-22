@@ -140,6 +140,15 @@ text-decoration:none;
 
 <button onclick="loginUser()">Login</button>
 
+<p style="margin-top:10px;text-align:center;">
+  New user?
+  <a href="#" onclick="showRegister()">Register here</a>
+</p>
+
+<p style="text-align:center;">
+  <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+</p>
+
 </div>
 
 
@@ -433,6 +442,37 @@ title:"Accident Location"
 
 map.setCenter({lat:lat,lng:lng})
 
+}
+
+function showRegister() {
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("registerPage").classList.remove("hidden");
+}
+
+function forgotPassword() {
+  let phone = prompt("Enter your registered phone number");
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  let user = users.find(u => u.phone === phone);
+
+  if (!user) {
+    alert("User not found!");
+    return;
+  }
+
+  let newPassword = prompt("Enter new password");
+
+  if (!newPassword) {
+    alert("Password cannot be empty!");
+    return;
+  }
+
+  user.password = newPassword;
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Password updated successfully!");
 }
 
 </script>
