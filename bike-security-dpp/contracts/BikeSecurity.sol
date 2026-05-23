@@ -7,7 +7,7 @@ contract BikeSecurity {
 
     event UserRegistered(string phone);
     event UserLoggedIn(string phone);
-    event SensorTriggered(string phone);
+    event SensorTriggered(string phone, string location, uint256 timestamp);
 
 
     // USER STRUCTURE
@@ -18,9 +18,23 @@ contract BikeSecurity {
     }
 
 
+    // ALERT STRUCTURE
+
+    struct SensorAlert {
+        string phone;
+        string location;
+        uint256 timestamp;
+    }
+
+
     // USER STORAGE
 
     mapping(string => User) public users;
+
+
+    // ALERT HISTORY STORAGE
+
+    mapping(string => SensorAlert[]) private alertHistory;
 
 
     // REGISTER USER
@@ -45,13 +59,23 @@ contract BikeSecurity {
     }
 
 
-    // SENSOR TRIGGER FUNCTION (PAYABLE)
+    // SENSOR TRIGGER FUNCTION
 
-    function triggerSensor(string memory phone) public payable {
+    function triggerSensor(string memory phone, string memory location) public {
 
         require(users[phone].registered, "User not registered");
 
-        emit SensorTriggered(phone);
+        alertHistory[phone].push(SensorAlert(phone, location, block.timestamp));
+
+        emit SensorTriggered(phone, location, block.timestamp);
+    }
+
+
+    // GET ALERT HISTORY
+
+    function getAlertHistory(string memory phone) public view returns (SensorAlert[] memory) {
+
+        return alertHistory[phone];
     }
 
 }

@@ -195,7 +195,7 @@ text-decoration:none;
 <th>Bike</th>
 <th>Phone</th>
 <th>Time</th>
-<th>Status</th>
+<th>Location</th>
 </tr>
 </thead>
 
@@ -220,14 +220,34 @@ let web3
 let contract
 let account
 
-const contractAddress="0x110957F319B9ae206Ad7e27D6ca6b4b18e62cc14"
+const contractAddress="0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab"
 
 const contractABI=[
 {
-"inputs":[{"internalType":"string","name":"phone","type":"string"}],
+"inputs":[
+{"internalType":"string","name":"phone","type":"string"},
+{"internalType":"string","name":"location","type":"string"}
+],
 "name":"triggerSensor",
 "outputs":[],
 "stateMutability":"nonpayable",
+"type":"function"
+},
+{
+"inputs":[{"internalType":"string","name":"phone","type":"string"}],
+"name":"getAlertHistory",
+"outputs":[
+{"components":[
+{"internalType":"string","name":"phone","type":"string"},
+{"internalType":"string","name":"location","type":"string"},
+{"internalType":"uint256","name":"timestamp","type":"uint256"}
+],
+"internalType":"struct BikeSecurity.SensorAlert[]",
+"name":"",
+"type":"tuple[]"
+}
+],
+"stateMutability":"view",
 "type":"function"
 }
 ]
@@ -333,6 +353,8 @@ contract=new web3.eth.Contract(contractABI,contractAddress)
 
 alert("MetaMask Connected: "+account)
 
+await loadAlertHistory()
+
 }
 
 else{
@@ -347,19 +369,29 @@ alert("Install MetaMask")
 async function triggerSensor(){
 
 let phone=userData.phone
+let location="Unknown"
+
+if(navigator.geolocation){
+location=await new Promise(resolve=>{
+navigator.geolocation.getCurrentPosition(
+p=>resolve(p.coords.latitude.toFixed(5)+","+p.coords.longitude.toFixed(5)),
+()=>resolve("Unknown")
+)
+})
+}
 
 document.getElementById("status").innerText="Waiting for MetaMask..."
 
 try{
 
-await contract.methods.triggerSensor(phone).send({
+await contract.methods.triggerSensor(phone,location).send({
 from:account,
 gas:300000
 })
 
 document.getElementById("status").innerText="Transaction Successful"
 
-addSensorRow("Success")
+await loadAlertHistory()
 
 sendEmergencyEmail()
 
@@ -370,8 +402,6 @@ addMarker()
 catch(error){
 
 document.getElementById("status").innerText="Transaction Failed"
-
-addSensorRow("Failed")
 
 }
 
@@ -397,20 +427,30 @@ params
 }
 
 
-/* TABLE */
+/* LOAD ALERT HISTORY FROM CHAIN */
 
-function addSensorRow(status){
+async function loadAlertHistory(){
 
-let table=document.getElementById("sensorTable").getElementsByTagName("tbody")[0]
+if(!contract) return
 
-let row=table.insertRow()
+let alerts=await contract.methods.getAlertHistory(userData.phone).call()
 
-let time=new Date().toLocaleString()
+let tbody=document.getElementById("sensorTable").getElementsByTagName("tbody")[0]
+
+tbody.innerHTML=""
+
+alerts.slice().reverse().forEach(function(a){
+
+let row=tbody.insertRow()
+
+let time=new Date(Number(a.timestamp)*1000).toLocaleString()
 
 row.insertCell(0).innerHTML=userData.bike
-row.insertCell(1).innerHTML=userData.phone
+row.insertCell(1).innerHTML=a.phone
 row.insertCell(2).innerHTML=time
-row.insertCell(3).innerHTML=status
+row.insertCell(3).innerHTML=a.location
+
+})
 
 }
 
