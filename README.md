@@ -1,13 +1,222 @@
-ABSTRACT
-This project presents a secure and reliable Bike Security System that uses blockchain technology to protect bikes from theft and ensure safe data handling. The main idea is to give bike owners a smart and digital way to monitor and secure their vehicles, since traditional methods are not always effective. In this system, users first register by creating an account and adding their bike details such as bike number and owner information. After registration, they can log in anytime to access the system. The system is designed to be simple and user-friendly, so even people with basic technical knowledge can use it easily. Sensors connected to the bike continuously monitor for unusual movements or tampering, and if any suspicious activity is detected, the system automatically triggers an alert. Users can also manually activate an alert if they feel their bike is at risk, helping in quick action and theft prevention.
-A key feature of this system is the use of blockchain technology to ensure security and transparency. Every action, such as registration and alert triggering, is recorded as a transaction using smart contracts, which automatically execute operations without the need for a middleman. Once the data is stored on the blockchain, it cannot be modified or deleted, making it highly secure and trustworthy. The system uses MetaMask for user authentication and transaction approval, acting as a digital wallet that ensures only authorized actions are performed. For development and testing, Ganache is used as a local blockchain environment, allowing safe and easy simulation of real blockchain operations. Overall, this system provides a modern, secure, and efficient solution for bike protection using advanced technologies.
+# 🚲 Bike Security & Emergency Alert System
 
+## 📌 Overview
 
-INTRODUCTION
-2.1 Problem Statement
-Road accidents and emergency situations are increasing day by day, and in many cases, victims do not receive help on time. Often, the injured person is unable to call for assistance due to serious injuries or unconsciousness, which leads to dangerous delays. Existing systems mostly depend on manual reporting, which is not reliable during critical situations. Because of this, there is a strong need for an automated system that can detect emergencies instantly and alert nearby people without any human intervention. At the same time, it is important that the data related to such incidents is stored securely and cannot be altered. To address these issues, this project uses a sensor-based system to detect accidents and automatically generate alerts. The alert is then recorded as a blockchain transaction using MetaMask and smart contracts deployed on Ganache. This approach ensures faster response, reliable communication, and secure data storage, ultimately improving human safety and emergency response efficiency.
+Bike Security & Emergency Alert System is a blockchain-based project designed to improve bike safety and emergency response. The system helps users monitor their bikes, detect suspicious activities or accidents, and securely store alert information using blockchain technology.
 
-2.2  Objective
-The main objective of this project is to develop a smart human safety system that can automatically detect accidents and send alerts without requiring human intervention. The system aims to reduce the response time during emergencies by instantly notifying nearby people. Another objective is to ensure that all emergency events are securely recorded using blockchain technology, preventing any data tampering or loss. The project also focuses on integrating modern technologies like sensors, web applications, and MetaMask for transaction handling. Additionally, it aims to create a user-friendly interface where users can easily register, log in, and trigger emergency alerts. Overall, the goal is to improve safety, reliability, and transparency in emergency response systems.
-2.3 Scope
-The scope of this project includes the development of a real-time accident detection and alert system using sensors and web technologies. It covers user registration, authentication, and interaction through a simple frontend interface. The system is integrated with blockchain using smart contracts deployed on Ganache, ensuring that all alert events are securely stored and traceable. The project is designed to work in a controlled environment and can be further expanded to include GPS tracking, automatic ambulance notification, and integration with emergency services. In the future, this system can be scaled for real-world applications such as smart cities, healthcare monitoring, and vehicle safety systems, making it a highly impactful solution for improving human safety
+The project integrates smart contracts, MetaMask, Ganache, and web technologies to provide secure, transparent, and tamper-proof data handling.
+
+---
+
+## 🚀 Features
+
+* 🔐 User authentication using MetaMask
+* 🚲 Bike registration and monitoring
+* 🚨 Automatic accident/tampering detection
+* 📢 Manual emergency alert system
+* ⛓️ Blockchain-based secure record storage
+* 🔒 Tamper-proof transaction history
+* 💻 Beginner-friendly web interface
+
+---
+
+## 🧠 Problem Statement
+
+Traditional bike security and emergency systems mainly depend on manual reporting, which can delay emergency response. In many situations, victims may not be able to ask for help due to injuries or unconsciousness.
+
+This project aims to solve this problem by automatically detecting emergencies and securely storing alert data using blockchain technology.
+
+---
+
+## 🎯 Objectives
+
+* Detect suspicious activities and accidents automatically
+* Reduce emergency response time
+* Provide secure and transparent data storage
+* Prevent modification of emergency records
+* Create an easy-to-use safety platform
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology          | Purpose               |
+| ------------------- | --------------------- |
+| HTML/CSS/JavaScript | Frontend              |
+| React.js            | User Interface        |
+| Node.js             | Backend               |
+| Solidity            | Smart Contracts       |
+| Ganache             | Local Blockchain      |
+| MetaMask            | Wallet Authentication |
+| Ethereum Blockchain | Secure Data Storage   |
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/prasan474/BikeSecurityDPP.git
+cd BikeSecurityDPP
+```
+
+### 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Install Ganache
+
+Ganache is used to run a local Ethereum blockchain for development and testing.
+
+Download Ganache from:
+https://trufflesuite.com/ganache/
+
+After installation:
+
+* Open Ganache
+* Create a new workspace
+* Start the local blockchain
+
+Default RPC URL:
+
+```bash
+http://127.0.0.1:7545
+```
+
+---
+
+### 4️⃣ Setup MetaMask
+
+MetaMask is required for blockchain authentication and transaction approval.
+
+Install MetaMask extension:
+https://metamask.io/
+
+Add a custom Ganache network using:
+
+| Field           | Value                 |
+| --------------- | --------------------- |
+| Network Name    | Ganache Local         |
+| RPC URL         | http://127.0.0.1:7545 |
+| Chain ID        | 1337                  |
+| Currency Symbol | ETH                   |
+
+Import an account using the private key provided by Ganache.
+
+---
+
+### 5️⃣ Compile Smart Contracts
+
+```bash
+truffle compile
+```
+
+---
+
+### 6️⃣ Deploy Smart Contracts
+
+```bash
+truffle migrate
+```
+
+---
+
+### 7️⃣ Run the Application
+
+```bash
+npm start
+```
+
+If the above command does not work, try:
+
+```bash
+npm run dev
+```
+
+---
+
+## 📂 Project Structure
+
+```plaintext
+BikeSecurityDPP/
+│── contracts/        # Smart contracts
+│── migrations/       # Contract deployment scripts
+│── src/              # Frontend source code
+│── public/           # Static files
+│── README.md
+```
+
+---
+
+## 🔄 Working Flow
+
+1. User registers and connects MetaMask wallet
+2. Bike details are added to the system
+3. Sensors monitor bike activity
+4. Emergency alerts are triggered during suspicious activity
+5. Alert information is stored securely on blockchain
+6. Users can also manually trigger alerts
+
+---
+
+## 🌍 Future Scope
+
+* 📍 GPS tracking support
+* 🚑 Automatic ambulance notification
+* 📱 Mobile application integration
+* 🏙️ Smart city integration
+* 👮 Emergency service connectivity
+
+---
+
+## 🤝 Contribution Guidelines
+
+1. Fork the repository
+2. Create a new branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Make your changes
+4. Commit changes
+
+```bash
+git commit -m "Improved README documentation"
+```
+
+5. Push changes
+
+```bash
+git push origin feature-name
+```
+
+6. Create a Pull Request
+
+---
+
+## 🐞 Reporting Issues
+
+If you find any bugs or issues:
+
+* Open an issue
+* Describe the problem clearly
+* Add screenshots if possible
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙌 Acknowledgements
+
+* Ethereum Blockchain
+* MetaMask
+* Ganache
+* Open Source Community
